@@ -71,6 +71,12 @@ def main(log_level: str) -> int:
     default=const.HTTP_TIMEOUT,
     help="HTTP request timeout in seconds.",
 )
+@click.option(
+    "--page-size",
+    type=int,
+    default=1000,
+    help="Number of records to retrieve per request",
+)
 def list_objects(
     mn_url: str,
     from_date: str | None,
@@ -81,13 +87,20 @@ def list_objects(
     start_offset: int,
     max_entries: int,
     timeout: float,
+    page_size: int,
 ) -> None:
+    """Perform a listObjects operation on the specified listObjects endpoint URL.
+
+    Note that the full listObjects URL must be specified, not the MN base url.
+    """
     from_datedt = None
     to_datedt = None
     if from_date is not None:
         from_datedt = dateparser.parse(from_date)
     if to_date is not None:
         to_datedt = dateparser.parse(to_date)
+    page_size = int(page_size)
+    timeout = float(timeout)
     with objectlist.ObjectList(
         mn_url,
         formatid=formatid,
@@ -97,6 +110,7 @@ def list_objects(
         to_date=to_datedt,
         offset=start_offset,
         max_entries=max_entries,
+        page_size=page_size,
         timeout=timeout,
     ) as ol:
         print(f"Total entries = {len(ol)}")

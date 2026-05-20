@@ -110,8 +110,9 @@ class ObjectList:
             self._page_offset += 1
             self._coffset += 1
             return entry
-        except IndexError as e:
-            _L.warning("Stop from %s", e)
+        except IndexError:
+            # It's ok, no more items to get
+            pass
         except KeyError as e:
             _L.warning("Stop from %s", e)
         except TypeError as e:
