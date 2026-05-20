@@ -9,14 +9,14 @@ Python library and CLI to synchronize a local copy by retrieving from the remote
 ## Installation
 
 ```bash
-python -m pip install synchronize_member_node
+uvx install ttps://github.com/datadavev/synchronize_member_node
 ```
 
 From source:
 ```bash
 git clone https://github.com/datadavev/synchronize_member_node
 cd synchronize_member_node
-python -m pip install .
+uv sync
 ```
 
 ## Usage
