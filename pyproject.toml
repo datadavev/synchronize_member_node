@@ -20,14 +20,17 @@ classifiers = [
   "Programming Language :: Python",
   "Programming Language :: Python :: 3",
   "Programming Language :: Python :: 3 :: Only",
-  "Programming Language :: Python :: 3.9",
-  "Programming Language :: Python :: 3.10",
-  "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
   "Topic :: Scientific/Engineering",
   "Typing :: Typed",
 ]
-dependencies = []
+dependencies = [
+    "httpx>=0.28.1",
+    "types-xmltodict>=1.0.1.20260518",
+    "xmltodict>=1.0.4",
+]
 
 [project.optional-dependencies]
 dev = [
@@ -42,6 +45,9 @@ Homepage = "https://github.com/datadavev/synchronize_member_node"
 "Bug Tracker" = "https://github.com/datadavev/synchronize_member_node/issues"
 Discussions = "https://github.com/datadavev/synchronize_member_node/discussions"
 Changelog = "https://github.com/datadavev/synchronize_member_node/releases"
+
+[project.scripts]
+syncmn = "synchronize_member_node.__main__:main"
 
 [tool.pytest.ini_options]
 minversion = "6.0"
@@ -118,3 +124,8 @@ unfixable = [
   "F841",   # Would remove unused variables
 ]
 flake8-unused-arguments.ignore-variadic-names = true  # allow unused *args/**kwargsisort.required-imports = ["from __future__ import annotations"]
+
+[dependency-groups]
+dev = [
+    "pytest>=9.0.3",
+]
