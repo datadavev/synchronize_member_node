@@ -15,3 +15,7 @@ DATAONE_CHECKSUM_ALGORITHMS: typing.Final[tuple[str, str]] = (
 )
 
 HTTP_USER_AGENT: str = f"synchronize_member_node/{synchronize_member_node.__version__}"
+
+JSON_TIME_FORMAT = "%Y-%m-%dT%H:%M:%S%z"
+"""datetime format string for generating JSON content
+"""

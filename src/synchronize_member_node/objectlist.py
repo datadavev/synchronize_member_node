@@ -1,5 +1,6 @@
 import dataclasses
 import datetime
+import json
 import logging
 import types
 
@@ -26,6 +27,9 @@ class ObjectInfo:
         assert len(self.identifier) > 0
         assert " " not in self.identifier
         assert self.size >= 0
+
+    def __repr__(self) -> str:
+        return json.dumps(self, cls=utils.DataclassJsonEncoder)
 
 
 class ObjectList:
