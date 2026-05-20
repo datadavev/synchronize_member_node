@@ -33,6 +33,10 @@ repos:
     rev: "v1.19.1"
     hooks:
       - id: mypy
+        name: mypy
+        entry: uv run mypy
         files: src
+        types: [python]
+        pass_filenames: true
         args: []
         language: system
