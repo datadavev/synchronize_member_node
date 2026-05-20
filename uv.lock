@@ -677,6 +677,7 @@ dependencies = [
     { name = "click" },
     { name = "dateparser" },
     { name = "httpx" },
+    { name = "types-dateparser" },
     { name = "types-xmltodict" },
     { name = "xmltodict" },
 ]
@@ -703,6 +704,7 @@ requires-dist = [
     { name = "pre-commit", marker = "extra == 'dev'" },
     { name = "pytest", marker = "extra == 'dev'", specifier = ">=6" },
     { name = "pytest-cov", marker = "extra == 'dev'", specifier = ">=3" },
+    { name = "types-dateparser", specifier = ">=1.4.0.20260518" },
     { name = "types-xmltodict", specifier = ">=1.0.1.20260518" },
     { name = "xmltodict", specifier = ">=1.0.4" },
 ]
@@ -710,6 +712,15 @@ provides-extras = ["dev"]
 
 [package.metadata.requires-dev]
 dev = [{ name = "pytest", specifier = ">=9.0.3" }]
+
+[[package]]
+name = "types-dateparser"
+version = "1.4.0.20260518"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/c4/ac/e2b54e9aa5c2f9b02563af880e5efa0829277a1cb6121ee159c0b27cb815/types_dateparser-1.4.0.20260518.tar.gz", hash = "sha256:db4ca45883e98e9247db1e7cc0cc09c763d641b87bda7a31cbd6e1cdf80127a9", size = 17642, upload-time = "2026-05-18T06:03:38.555Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/23/d8/35b5983cf4667d11f19c60f43b747465f1a5b31dd64f33dfc07444596a85/types_dateparser-1.4.0.20260518-py3-none-any.whl", hash = "sha256:c20b4e0979da9edf2729daba71b36b749b7afc18bec6afb6f89f1052d085a0e3", size = 24869, upload-time = "2026-05-18T06:03:37.706Z" },
+]
 
 [[package]]
 name = "types-xmltodict"

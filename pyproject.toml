@@ -30,6 +30,7 @@ dependencies = [
     "click>=8.4.0",
     "dateparser>=1.4.0",
     "httpx>=0.28.1",
+    "types-dateparser>=1.4.0.20260518",
     "types-xmltodict>=1.0.1.20260518",
     "xmltodict>=1.0.4",
 ]

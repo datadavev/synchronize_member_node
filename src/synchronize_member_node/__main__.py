@@ -3,8 +3,9 @@
 import logging
 
 import click
+import dateparser
 
-from . import objectlist
+from . import const, objectlist
 
 
 def get_logger() -> logging.Logger:
@@ -27,10 +28,78 @@ def main(log_level: str) -> int:
 @main.command(name="objects")
 @click.argument("mn_url")
 @click.option(
-    "-x", "--max", "max_entries", type=int, default=10, help="Max entries to retrieve."
+    "-f",
+    "--from-date",
+    default=None,
+    help="Limit to entries with dateSysMetadatModified >= from-date.",
 )
-def list_objects(mn_url: str, max_entries: int) -> None:
-    with objectlist.ObjectList(mn_url, max_entries=max_entries) as ol:
+@click.option(
+    "-t",
+    "--to-date",
+    default=None,
+    help="Limit to entries with dateSysMetadatModified < to-date.",
+)
+@click.option(
+    "-d", "--formatid", default=None, help="Restrict to entries with matching formatId."
+)
+@click.option(
+    "-i", "--identifier", default=None, help="Restrict to specified identifier."
+)
+@click.option(
+    "--no-replicas",
+    is_flag=True,
+    help="Do not return entries that have any entry in SystemMetadata.replicated.",
+)
+@click.option(
+    "-s",
+    "--start",
+    "start_offset",
+    default=0,
+    help="Zero based offset of first entry.",
+)
+@click.option(
+    "-c",
+    "--count",
+    "max_entries",
+    type=int,
+    default=10,
+    help="Maximum number of entries to retrieve.",
+)
+@click.option(
+    "--timeout",
+    type=float,
+    default=const.HTTP_TIMEOUT,
+    help="HTTP request timeout in seconds.",
+)
+def list_objects(
+    mn_url: str,
+    from_date: str | None,
+    to_date: str | None,
+    formatid: str | None,
+    identifier: str | None,
+    no_replicas: bool,
+    start_offset: int,
+    max_entries: int,
+    timeout: float,
+) -> None:
+    from_datedt = None
+    to_datedt = None
+    if from_date is not None:
+        from_datedt = dateparser.parse(from_date)
+    if to_date is not None:
+        to_datedt = dateparser.parse(to_date)
+    with objectlist.ObjectList(
+        mn_url,
+        formatid=formatid,
+        identifier=identifier,
+        replica_status=no_replicas,
+        from_date=from_datedt,
+        to_date=to_datedt,
+        offset=start_offset,
+        max_entries=max_entries,
+        timeout=timeout,
+    ) as ol:
+        print(f"Total entries = {len(ol)}")
         for info in ol:
             print(info)
 

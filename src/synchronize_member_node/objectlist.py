@@ -38,6 +38,9 @@ class ObjectList:
     def __init__(
         self,
         lo_url: str,
+        formatid: str | None = None,
+        identifier: str | None = None,
+        replica_status: bool = True,
         offset: int = 0,
         max_entries: int = -1,
         from_date: datetime.datetime | None = None,
@@ -46,6 +49,9 @@ class ObjectList:
         timeout: float = const.HTTP_TIMEOUT,
     ):
         self._url = lo_url
+        self._formatid = formatid
+        self._identifier = identifier
+        self._replica_status = replica_status
         self._start_offset = offset
         self._max_entries = max_entries
         self._page_size = page_size
@@ -81,6 +87,8 @@ class ObjectList:
         return self
 
     def __len__(self) -> int:
+        if self._cpage is None:
+            self._getPage()
         return self._total_records
 
     def __next__(self) -> ObjectInfo:
@@ -89,7 +97,7 @@ class ObjectList:
             _L.debug("Starting object iteration")
             self._getPage()
             self._started = True
-        if self._cpage is None:
+        if self._cpage is None or len(self._cpage) == 0:
             _L.debug("Out of pages")
             raise StopIteration
         if self._max_entries > 0 and self._coffset >= self._max_entries:
@@ -102,6 +110,8 @@ class ObjectList:
             self._page_offset += 1
             self._coffset += 1
             return entry
+        except IndexError as e:
+            _L.warning("Stop from %s", e)
         except KeyError as e:
             _L.warning("Stop from %s", e)
         except TypeError as e:
@@ -120,6 +130,12 @@ class ObjectList:
             params["fromDate"] = utils.dtToDataONETime(self._from_date)
         if self._to_date is not None:
             params["toDate"] = utils.dtToDataONETime(self._to_date)
+        if self._formatid is not None:
+            params["formatId"] = self._formatid
+        if self._identifier is not None:
+            params["identifier"] = self._identifier
+        if self._replica_status:
+            params["replicaStatus"] = "false"
         _L.debug("request params: %s", params)
         response = self._client.get(self._url, params=params)
         response.raise_for_status()
